@@ -23,28 +23,40 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-         Constants.counter++;
+       if(intent.getAction().equals("important")) {
+            Constants.counter++;
 
-         inboxStyle.addLine("" + Constants.counter);
+            inboxStyle.addLine("" + Constants.counter);
 
-         intentAction = new Intent(context.getApplicationContext(), MyBroadcastReceiver.class);
+            intentAction = new Intent(context.getApplicationContext(), MyBroadcastReceiver.class);
 
-         pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 1, intentAction, 0);
+            pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 1, intentAction, 0);
 
-        NotificationManagerCompat manager = NotificationManagerCompat.from(context.getApplicationContext());
-        inboxStyle.addLine("" + counter++);
-        Notification notification = new Notification.Builder(context, "tring_id")
-                .setContentTitle("5 New mails from ")
-                .setContentText("Wtf")
-                .setSmallIcon(android.R.drawable.star_on)
-                .setStyle(inboxStyle)
-                .addAction(android.R.drawable.btn_minus, "Action 1", pendingIntent)
-                .build();
+            NotificationManagerCompat manager = NotificationManagerCompat.from(context.getApplicationContext());
+            inboxStyle.addLine("" + counter++);
+            Notification notification = new Notification.Builder(context, "tring_id")
+                    .setContentTitle("5 New mails from ")
+                    .setContentText("Wtf")
+                    .setSmallIcon(android.R.drawable.star_on)
+                    .setStyle(inboxStyle)
+                    .addAction(android.R.drawable.btn_minus, "Action 1", pendingIntent)
+                    .addAction(android.R.drawable.btn_plus, "News and Alerts", PendingIntent.getActivity(context.getApplicationContext(), 0, new Intent(), 0))
+                    .addAction(android.R.drawable.btn_star, "Others", PendingIntent.getActivity(context.getApplicationContext(), 0, new Intent(), 0))
+                    .build();
 
-        manager.notify(0, notification);
+            manager.notify(0, notification);
 
-        Log.d(TAG, "modifyNotification: ");
+            Log.d(TAG, "modifyNotification: ");
 
-        Toast.makeText(context.getApplicationContext(), "Pending intent fired", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context.getApplicationContext(), "Pending intent fired", Toast.LENGTH_SHORT).show();
+        }
+
+       else if(intent.getAction().equals("news")){
+           Toast.makeText(context.getApplicationContext(), "News Clicked", Toast.LENGTH_SHORT).show();
+       }
+
+       else if(intent.getAction().equals("others")){
+           Toast.makeText(context.getApplicationContext(), "Others Clicked", Toast.LENGTH_SHORT).show();
+       }
     }
 }

@@ -4,27 +4,22 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
-
-import static com.example.bundlednotif.MainActivity.TAG;
 
 public class MainActivity extends AppCompatActivity {
     Button button;
     NotificationManagerCompat manager;
     public static final String TAG = MainActivity.class.getSimpleName();
-    PendingIntent pendingIntent;
+    PendingIntent pendingIntentImportant;
+    PendingIntent pendingIntentNews;
+    PendingIntent pendingIntentOthers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +44,17 @@ public class MainActivity extends AppCompatActivity {
     private void createBundledNotification(){
         //This is the intent of PendingIntent
         Intent intentAction = new Intent(this, MyBroadcastReceiver.class);
+        intentAction.setAction("important");
 
-         pendingIntent = PendingIntent.getBroadcast(this, 1, intentAction, 0);
+        Intent intentNews = new Intent(this, MyBroadcastReceiver.class);
+        intentNews.setAction("news");
+
+        Intent intentOthers = new Intent(this, MyBroadcastReceiver.class);
+        intentOthers.setAction("others");
+
+        pendingIntentImportant = PendingIntent.getBroadcast(this, 1, intentAction, 0);
+        pendingIntentNews = PendingIntent.getBroadcast(this, 2, intentNews, 0);
+        pendingIntentOthers = PendingIntent.getBroadcast(this, 3, intentOthers, 0);
 
         NotificationCompat.Builder regularBuilder = new NotificationCompat.Builder(this, "tring_id")
                 .setContentTitle("TEST")
@@ -75,7 +79,9 @@ public class MainActivity extends AppCompatActivity {
                         .addLine("Test1")
                         .addLine("Test2")
                         .setSummaryText("+3 more"))
-                .addAction(android.R.drawable.btn_minus, "Action 1", pendingIntent)
+                .addAction(android.R.drawable.btn_minus, "Important", pendingIntentImportant)
+                .addAction(android.R.drawable.btn_plus, "News and Alerts", pendingIntentNews)
+                .addAction(android.R.drawable.btn_star, "Others", pendingIntentOthers)
                 .setOngoing(true)
                 .build();
 
@@ -94,8 +100,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public PendingIntent getPendingIntent(){
-        return pendingIntent;
+    public PendingIntent getPendingIntentImportant(){
+        return pendingIntentImportant;
     }
 
     private void createNotificationChannel() {
