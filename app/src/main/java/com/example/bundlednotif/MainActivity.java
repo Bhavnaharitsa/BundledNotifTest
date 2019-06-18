@@ -100,6 +100,53 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void createBundledNotif2(){
+        //use constant ID for notification used as group summary
+        int SUMMARY_ID = 0;
+        String GROUP_KEY_WORK_EMAIL = "com.android.example.WORK_EMAIL";
+        int emailNotificationId1 = 2;
+        int emailNotificationId2 = 3;
+
+        Notification newMessageNotification1 =
+                new NotificationCompat.Builder(MainActivity.this, "tring_id")
+                        .setSmallIcon(android.R.drawable.ic_dialog_email)
+                        .setContentTitle("Email 1")
+                        .setContentText("You will not believe...")
+                        .setGroup(GROUP_KEY_WORK_EMAIL)
+                        .build();
+
+        Notification newMessageNotification2 =
+                new NotificationCompat.Builder(MainActivity.this, "tring_id")
+                        .setSmallIcon(android.R.drawable.ic_dialog_email)
+                        .setContentTitle("Email 2")
+                        .setContentText("Please join us to celebrate the...")
+                        .setGroup(GROUP_KEY_WORK_EMAIL)
+                        .build();
+
+        Notification summaryNotification =
+                new NotificationCompat.Builder(MainActivity.this, "tring_id")
+                        .setContentTitle("You have Emails")
+                        //set content text to support devices running API level < 24
+                        .setContentText("Two new messages")
+                        .setSmallIcon(android.R.drawable.ic_dialog_email)
+                        //build summary info into InboxStyle template
+                        .setStyle(new NotificationCompat.InboxStyle()
+                                .addLine("Alex Faarborg  Check this out")
+                                .addLine("Jeff Chang    Launch Party")
+                                .setBigContentTitle("2 new messages")
+                                .setSummaryText("janedoe@example.com"))
+                        //specify which group this notification belongs to
+                        .setGroup(GROUP_KEY_WORK_EMAIL)
+                        //set this notification as the summary for the group
+                        .setGroupSummary(true)
+                        .build();
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(emailNotificationId1, newMessageNotification1);
+        notificationManager.notify(emailNotificationId2, newMessageNotification2);
+        notificationManager.notify(SUMMARY_ID, summaryNotification);
+    }
+
     public PendingIntent getPendingIntentImportant(){
         return pendingIntentImportant;
     }
