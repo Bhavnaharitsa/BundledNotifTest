@@ -82,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
                 .addAction(android.R.drawable.btn_minus, "Important", pendingIntentImportant)
                 .addAction(android.R.drawable.btn_plus, "News and Alerts", pendingIntentNews)
                 .addAction(android.R.drawable.btn_star, "Others", pendingIntentOthers)
+                .setStyle(new Notification.BigTextStyle()
+                        .bigText("TEXT"))
                 .setOngoing(true)
                 .build();
 
@@ -122,6 +124,8 @@ public class MainActivity extends AppCompatActivity {
                         .setContentText("Please join us to celebrate the...")
                         .setGroup(GROUP_KEY_WORK_EMAIL)
                         .build();
+
+
 
         Notification summaryNotification =
                 new NotificationCompat.Builder(MainActivity.this, "tring_id")
